@@ -10,7 +10,7 @@
         <result column="age" jdbcType="INTEGER" property="age"/>
     </resultMap>
 
-    <select id="selStu" resultType="com.imooc.pojo.Stu" parameterType="String">
+    <select id="selStu" resultType="com.hcr.pojo.Stu" parameterType="String">
         SELECT id,name,age from stu
         <where>
             <if test="id != null">
