@@ -39,6 +39,9 @@ mybatis:
   type-aliases-package: com.imooc.pojo
   #mapper映射
   mapper-locations: classpath:mapper/*.xml
+  #开启MyBatis日志Sql控制台打印  仅在开发测试环境是使用，生产环境注掉
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 ############################################################
 #
 # mybatis mapper 配置

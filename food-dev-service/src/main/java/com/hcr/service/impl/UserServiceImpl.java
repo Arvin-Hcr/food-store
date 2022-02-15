@@ -19,7 +19,8 @@ import java.util.Date;
 //快捷鍵ctrl+i kuai jie bu chong jian
 @Service
 public class UserServiceImpl implements UserService {
-    private static final String USER_FACE = "122.152.205.72:88/group1/M00/00/05/CpoxxFw_8_qAllFXAAAclhVPdSg994.png";
+
+    private static final String USER_FACE = "http://122.152.205.72:88/group1/M00/00/05/CpoxxFw_8_qAIlFXAAAcIhVPdSg994.png";
 
     @Autowired
     private UsersMapper usersMapper;
