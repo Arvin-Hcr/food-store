@@ -4,7 +4,7 @@ import com.hcr.bo.UserBO;
 import com.hcr.pojo.Users;
 import com.hcr.service.UserService;
 import com.hcr.utils.CookieUtils;
-import com.hcr.utils.IMOOCJSONResult;
+import com.hcr.utils.JSONResult;
 import com.hcr.utils.JsonUtils;
 import com.hcr.utils.MD5Utils;
 import io.swagger.annotations.Api;
@@ -26,24 +26,24 @@ public class PassportController {
 
     @ApiOperation(value = "用户名是否存在", notes = "用户名是否存在", httpMethod = "GET")
     @GetMapping("/usernameIsExist")
-    public IMOOCJSONResult usernameIsExist(@RequestParam String username) {
+    public JSONResult usernameIsExist(@RequestParam String username) {
         //1. 判断用户名是否为空
         if (StringUtils.isBlank(username)) {
-            return IMOOCJSONResult.errorMsg("用户名为空");
+            return JSONResult.errorMsg("用户名为空");
 
         }
         //2.查找注册的用户是否存在
         boolean isExist = userService.queryUsernameIsExist(username);
         if (isExist) {
-            return IMOOCJSONResult.errorMsg("用户名已存在");
+            return JSONResult.errorMsg("用户名已存在");
         }
         //3. 请求成功，用户名不存在
-        return IMOOCJSONResult.ok();
+        return JSONResult.ok();
     }
 
     @ApiOperation(value = "用户注册", notes = "用户注册", httpMethod = "POST")
     @PostMapping("/regist")
-    public IMOOCJSONResult usernameIsExist(@RequestBody UserBO userBO, HttpServletRequest request, HttpServletResponse response) {
+    public JSONResult usernameIsExist(@RequestBody UserBO userBO, HttpServletRequest request, HttpServletResponse response) {
 
         String username = userBO.getUsername();
         String password = userBO.getPassword();
@@ -51,20 +51,20 @@ public class PassportController {
 
         //1. 判断用户名和密码必须不为空
         if (StringUtils.isBlank(username) || StringUtils.isBlank(password) || StringUtils.isBlank(confirmPwd)) {
-            return IMOOCJSONResult.errorMsg("用户名或密码不能为空");
+            return JSONResult.errorMsg("用户名或密码不能为空");
         }
         //2.查询用户名是否存在
         boolean isExist = userService.queryUsernameIsExist(username);
         if (isExist) {
-            return IMOOCJSONResult.errorMsg("用户名已经存在");
+            return JSONResult.errorMsg("用户名已经存在");
         }
         //3.密码长度不能少于6位
         if (password.length() < 6) {
-            return IMOOCJSONResult.errorMsg("密码长度不能小于6");
+            return JSONResult.errorMsg("密码长度不能小于6");
         }
         //4.判断两次密码是否一致
         if (!password.equals(confirmPwd)) {
-            return IMOOCJSONResult.errorMsg("两次密码输入不一致");
+            return JSONResult.errorMsg("两次密码输入不一致");
         }
         //5.实现注册
         Users userResult = userService.createUser(userBO);
@@ -72,33 +72,34 @@ public class PassportController {
         CookieUtils.setCookie(request,response,"user", JsonUtils.objectToJson(userResult),true);
 
 
-        return IMOOCJSONResult.ok();
+        return JSONResult.ok();
 
     }
 
     @ApiOperation(value = "用户登录",notes = "用户登录",httpMethod = "POST")
     @PostMapping("/login")
-    public IMOOCJSONResult login(@RequestBody UserBO userBO,HttpServletRequest request,HttpServletResponse response) throws Exception {
+    public JSONResult login(@RequestBody UserBO userBO, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         String username = userBO.getUsername();
         String password = userBO.getPassword();
 
         //1. 判断用户名和密码必须不为空
         if (StringUtils.isBlank(username) ||StringUtils.isBlank(password) ){
-            return IMOOCJSONResult.errorMsg("用户名或密码不能为空");
+            return JSONResult.errorMsg("用户名或密码不能为空");
         }
 
         //2.实现登录
+
         Users userResult = userService.queryUserForLogin(username, MD5Utils.getMD5Str(password));
 
         if (userResult == null){
-            return IMOOCJSONResult.errorMsg("用户名或密码不正确");
+            return JSONResult.errorMsg("用户名或密码不正确");
         }
 
         userResult = setNullProperty(userResult);
         CookieUtils.setCookie(request,response,"user", JsonUtils.objectToJson(userResult),true);
 
-        return IMOOCJSONResult.ok(userResult);
+        return JSONResult.ok(userResult);
 
     }
 
