@@ -43,14 +43,18 @@ public class PassportController {
 
     @ApiOperation(value = "用户注册", notes = "用户注册", httpMethod = "POST")
     @PostMapping("/regist")
-    public JSONResult usernameIsExist(@RequestBody UserBO userBO, HttpServletRequest request, HttpServletResponse response) {
+    public JSONResult usernameIsExist(@RequestBody UserBO userBO,
+                                      HttpServletRequest request,
+                                      HttpServletResponse response) {
 
         String username = userBO.getUsername();
         String password = userBO.getPassword();
         String confirmPwd = userBO.getConfirmPassword();
 
         //1. 判断用户名和密码必须不为空
-        if (StringUtils.isBlank(username) || StringUtils.isBlank(password) || StringUtils.isBlank(confirmPwd)) {
+        if (StringUtils.isBlank(username)
+                || StringUtils.isBlank(password)
+                || StringUtils.isBlank(confirmPwd)) {
             return JSONResult.errorMsg("用户名或密码不能为空");
         }
         //2.查询用户名是否存在
@@ -69,7 +73,8 @@ public class PassportController {
         //5.实现注册
         Users userResult = userService.createUser(userBO);
 
-        CookieUtils.setCookie(request,response,"user", JsonUtils.objectToJson(userResult),true);
+        CookieUtils.setCookie(request,response,"user",
+                JsonUtils.objectToJson(userResult),true);
 
 
         return JSONResult.ok();
@@ -78,7 +83,9 @@ public class PassportController {
 
     @ApiOperation(value = "用户登录",notes = "用户登录",httpMethod = "POST")
     @PostMapping("/login")
-    public JSONResult login(@RequestBody UserBO userBO, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public JSONResult login(@RequestBody UserBO userBO,
+                            HttpServletRequest request,
+                            HttpServletResponse response) throws Exception {
 
         String username = userBO.getUsername();
         String password = userBO.getPassword();
@@ -97,7 +104,8 @@ public class PassportController {
         }
 
         userResult = setNullProperty(userResult);
-        CookieUtils.setCookie(request,response,"user", JsonUtils.objectToJson(userResult),true);
+        CookieUtils.setCookie(request,response,"user",
+                JsonUtils.objectToJson(userResult),true);
 
         return JSONResult.ok(userResult);
 
@@ -112,5 +120,20 @@ public class PassportController {
         userResult.setBirthday(null);
         return userResult;
     }
+
+    @ApiOperation(value = "用户退出登录",notes = "用户退出登录",httpMethod = "POST")
+    @PostMapping("/logout")
+    public JSONResult logout(@RequestParam String userId,
+                                  HttpServletRequest request,
+                                  HttpServletResponse response){
+
+        //清除用户的相关信息的cookie
+        CookieUtils.deleteCookie(request,response,"user");
+        //TODO 用户退出需要清空购物车
+        //TODO 分布式会话中需要清除用户数据
+
+        return JSONResult.ok();
+    }
+
 
 }
