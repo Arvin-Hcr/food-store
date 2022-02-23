@@ -3,6 +3,7 @@ package com.hcr.service.impl;
 import com.hcr.bo.UserBO;
 import com.hcr.mapper.UsersMapper;
 import com.hcr.menus.Sex;
+import com.hcr.org.n3r.idworker.Sid;
 import com.hcr.pojo.Users;
 import com.hcr.service.UserService;
 import com.hcr.utils.DateUtils;
@@ -25,6 +26,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UsersMapper usersMapper;
 
+    @Autowired
+    private Sid sid;
+
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
     public boolean queryUsernameIsExist(String userName) {
@@ -38,9 +42,13 @@ public class UserServiceImpl implements UserService {
     @Transactional(propagation = Propagation.REQUIRED)  //创建用，用require 为必须有一个事务，出错可回滚
     @Override
     public Users createUser(UserBO userBO) {
+        //添加唯一索引Id
+        String userId = sid.nextShort();
+
         Users users = new Users();
         //随机ID，后续修改为全局唯一索引ID
-        users.setId(RandomUtil.getRandomDateNum());
+        // users.setId(RandomUtil.getRandomDateNum());
+        users.setId(userId);
         users.setUsername(userBO.getUsername());
         try {
             //对密码进行md5加密
