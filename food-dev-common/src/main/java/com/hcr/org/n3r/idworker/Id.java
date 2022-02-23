@@ -1,6 +1,7 @@
 package com.hcr.org.n3r.idworker;
 
-import org.n3r.idworker.strategy.DefaultWorkerIdStrategy;
+
+import com.hcr.org.n3r.idworker.strategy.DefaultWorkerIdStrategy;
 
 public class Id {
     private static WorkerIdStrategy workerIdStrategy;

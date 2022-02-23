@@ -1,3 +1,8 @@
+  //原路径
+    //http://localhost:8088/swagger-ui.html
+    //http://localhost:8088/doc.html
+    //http://localhost:8080/foodie-shop/register.html
+
 为什么存储过程可以提速？
 1、存储过程只需要在创建的时候编译就行了，而SQL每次执行都需要被数据库编译
 2、存储过程可以降低网络开销
