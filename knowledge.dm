@@ -3,6 +3,20 @@
     //http://localhost:8088/doc.html
     //http://localhost:8080/foodie-shop/register.html
 
+获取商品子分类使用递归查询
+
+ <!--     MyBatis.xml
+          column 对应 SQL (as proId) property对应 vo
+          collection 标签：用于定义关联的list集合类型的封装规则
+          property：对应三级分类的list属性名
+          ofType：集合的类型，三级分类的vo
+        -->
+
+BO与业务相关 VO：前端发送请求传入的数据给后端，内部传出去由后端传给前端，拿到数据展示在显示层（表现层view）
+
+
+
+
 为什么存储过程可以提速？
 1、存储过程只需要在创建的时候编译就行了，而SQL每次执行都需要被数据库编译
 2、存储过程可以降低网络开销
