@@ -3,7 +3,8 @@
 <mapper namespace="com.hcr.mapper.CategoryMapper" >
   <resultMap id="BaseResultMap" type="com.hcr.pojo.Category" >
     <!--
-      WARNING - @mbg.generated
+      WARNING - @mbg.generated  column 对应 SQL (as proId) property对应 vo
+       <collention property="suList" 集合 ofType=“全路径”对应vo三级分类list映射
     -->
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />

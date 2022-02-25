@@ -1,4 +1,7 @@
 package com.hcr.mapper;
 
-public interface CategoryMapper {
+import com.hcr.my.mapper.MyMapper;
+import com.hcr.pojo.Category;
+
+public interface CategoryMapper extends MyMapper<Category> {
 }
