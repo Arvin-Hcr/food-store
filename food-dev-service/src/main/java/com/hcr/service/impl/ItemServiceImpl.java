@@ -1,14 +1,10 @@
 package com.hcr.service.impl;
 
-import com.hcr.mapper.ItemsImgMapper;
-import com.hcr.mapper.ItemsMapper;
-import com.hcr.mapper.ItemsParamMapper;
-import com.hcr.mapper.ItemsSpecMapper;
-import com.hcr.pojo.Items;
-import com.hcr.pojo.ItemsImg;
-import com.hcr.pojo.ItemsParam;
-import com.hcr.pojo.ItemsSpec;
+import com.hcr.mapper.*;
+import com.hcr.menus.CommentLevel;
+import com.hcr.pojo.*;
 import com.hcr.service.ItemService;
+import com.hcr.vo.CommentLevelCountsVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -31,6 +27,9 @@ public class ItemServiceImpl implements ItemService {
 
     @Autowired
     private ItemsParamMapper itemsParamMapper;
+
+    @Autowired
+    private ItemsCommentsMapper itemsCommentsMapper;
 
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
@@ -67,4 +66,31 @@ public class ItemServiceImpl implements ItemService {
 
         return itemsParamMapper.selectOneByExample(itemsParam);
     }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public CommentLevelCountsVO queryCommentCounts(String itemId) {
+        Integer goodCounts = getCommentCounts(itemId, CommentLevel.GOOD.type);
+        Integer normalCounts = getCommentCounts(itemId,CommentLevel.NORMAL.type);
+        Integer bedCounts = getCommentCounts(itemId,CommentLevel.BAD.type);
+        Integer totalCounts = goodCounts + normalCounts + bedCounts;
+
+        CommentLevelCountsVO countsVO = new CommentLevelCountsVO();
+        countsVO.setTotalCounts(totalCounts);
+        countsVO.setGoodCounts(goodCounts);
+        countsVO.setNormalCounts(normalCounts);
+        countsVO.setBadCounts(bedCounts);
+        return countsVO;
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    Integer getCommentCounts(String itemId, Integer level){
+        ItemsComments condition = new ItemsComments();
+        condition.setItemId(itemId);
+        if (level != null){
+            condition.setCommentLevel(level);
+        }
+        return itemsCommentsMapper.selectCount(condition);
+    }
+
 }

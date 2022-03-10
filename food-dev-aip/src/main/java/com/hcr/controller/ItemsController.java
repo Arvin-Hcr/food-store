@@ -6,16 +6,14 @@ import com.hcr.pojo.ItemsParam;
 import com.hcr.pojo.ItemsSpec;
 import com.hcr.service.ItemService;
 import com.hcr.utils.JSONResult;
+import com.hcr.vo.CommentLevelCountsVO;
 import com.hcr.vo.ItemInfoVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -48,5 +46,17 @@ public class ItemsController{
         itemInfoVO.setItemParams(itemsParam);
 
         return JSONResult.ok(itemInfoVO);
+    }
+
+    @ApiOperation(value = "查询商品评价等级", notes = "查询商品评价等级", httpMethod = "GET")
+    @GetMapping("/commentLevel")
+    public JSONResult commentLevel(
+            @ApiParam(name = "itemId", value = "商品id", required = true)
+            @RequestParam String itemId){
+        if (StringUtils.isBlank(itemId)){
+            return JSONResult.errorMsg(null);
+        }
+        CommentLevelCountsVO countsVO = itemService.queryCommentCounts(itemId);
+        return JSONResult.ok(countsVO);
     }
 }
