@@ -1,4 +1,7 @@
 package com.hcr.mapper;
 
-public interface ItemsSpecMapper {
+import com.hcr.my.mapper.MyMapper;
+import com.hcr.pojo.ItemsSpec;
+
+public interface ItemsSpecMapper extends MyMapper<ItemsSpec> {
 }
