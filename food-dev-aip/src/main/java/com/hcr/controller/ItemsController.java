@@ -6,6 +6,7 @@ import com.hcr.pojo.ItemsParam;
 import com.hcr.pojo.ItemsSpec;
 import com.hcr.service.ItemService;
 import com.hcr.utils.JSONResult;
+import com.hcr.utils.PagedGridResult;
 import com.hcr.vo.CommentLevelCountsVO;
 import com.hcr.vo.ItemInfoVO;
 import io.swagger.annotations.Api;
@@ -20,7 +21,7 @@ import java.util.List;
 @Api(value = "商品接口",tags = {"商品信息展示的相关接口"})
 @RestController
 @RequestMapping("items")
-public class ItemsController{
+public class ItemsController extends BaseController{
 
     @Autowired
     private ItemService itemService;
@@ -58,5 +59,28 @@ public class ItemsController{
         }
         CommentLevelCountsVO countsVO = itemService.queryCommentCounts(itemId);
         return JSONResult.ok(countsVO);
+    }
+
+    @ApiOperation(value = "查询商品评论", notes = "查询商品评论", httpMethod = "GET")
+    @GetMapping("/comments")
+    public JSONResult comments(@ApiParam(name = "itemId", value = "商品id",required = true)
+                               @RequestParam String itemId,
+                               @ApiParam(name = "level", value = "评价等级",required = false)
+                               @RequestParam Integer level,
+                               @ApiParam(name = "page",value = "查询下一页的第几页",required = false)
+                               @RequestParam Integer page,
+                               @ApiParam(name = "pageSize",value = "分页的每一页显示的条数",required = false)
+                               @RequestParam Integer pageSize){
+        if (StringUtils.isBlank(itemId)){
+            return JSONResult.errorMsg(null);
+        }
+        if (page == null){
+            page = 1;
+        }
+        if (pageSize == null){
+            pageSize = COMMON_PAGE_SIZE;
+        }
+        PagedGridResult gridResult = itemService.queryPagedComments(itemId,level,page,pageSize);
+        return JSONResult.ok(gridResult);
     }
 }

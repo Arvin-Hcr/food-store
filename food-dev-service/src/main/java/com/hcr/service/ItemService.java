@@ -4,6 +4,7 @@ import com.hcr.pojo.Items;
 import com.hcr.pojo.ItemsImg;
 import com.hcr.pojo.ItemsParam;
 import com.hcr.pojo.ItemsSpec;
+import com.hcr.utils.PagedGridResult;
 import com.hcr.vo.CommentLevelCountsVO;
 import org.apache.commons.lang3.StringUtils;
 
@@ -45,4 +46,15 @@ public interface ItemService {
      * @return
      */
     public CommentLevelCountsVO queryCommentCounts(String itemId);
+
+    /**
+     * 根据商品id查询商品的评价（分页）
+     * @param itemId
+     * @param level
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    public PagedGridResult queryPagedComments(String itemId, Integer level,
+                                              Integer page, Integer pageSize);
 }
