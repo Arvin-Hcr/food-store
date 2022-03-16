@@ -94,9 +94,9 @@ public class ItemsController extends BaseController{
                                @RequestParam Integer page,
                                @ApiParam(name = "pageSize",value = "分页的每一页显示的条数",required = false)
                                @RequestParam Integer pageSize){
-//        if (StringUtils.isBlank(keywords)){
-//            return JSONResult.errorMsg(null);
-//        }
+        if (StringUtils.isBlank(keywords)){
+            return JSONResult.errorMsg(null);
+        }
         if (page == null){
             page = 1;
         }
