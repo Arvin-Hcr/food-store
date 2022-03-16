@@ -10,6 +10,7 @@ import com.hcr.utils.DesensitizationUtil;
 import com.hcr.utils.PagedGridResult;
 import com.hcr.vo.CommentLevelCountsVO;
 import com.hcr.vo.ItemCommentVO;
+import com.hcr.vo.SearchItemsVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -116,6 +117,19 @@ public class ItemServiceImpl implements ItemService {
         for (ItemCommentVO vo : list){
             vo.setNickname(DesensitizationUtil.commonDisplay(vo.getNickname()));
         }
+        return setterPageGrid(list,page);
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public PagedGridResult searchItems(String keywords, String sort, Integer page, Integer pageSize) {
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("keywords",keywords);
+        map.put("sort",sort);
+        //分页
+        PageHelper.startPage(page, pageSize);
+        List<SearchItemsVO> list = itemsMapperCustom.searchItems(map);
         return setterPageGrid(list,page);
     }
 
