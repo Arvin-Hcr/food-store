@@ -11,15 +11,14 @@ import com.hcr.utils.PagedGridResult;
 import com.hcr.vo.CommentLevelCountsVO;
 import com.hcr.vo.ItemCommentVO;
 import com.hcr.vo.SearchItemsVO;
+import com.hcr.vo.ShopCartVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ItemServiceImpl implements ItemService {
@@ -143,6 +142,16 @@ public class ItemServiceImpl implements ItemService {
         PageHelper.startPage(page, pageSize);
         List<SearchItemsVO> list = itemsMapperCustom.searchItemsByThirdCat(map);
         return setterPageGrid(list,page);
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public List<ShopCartVO> queryItemsBySpecIds(String specIds) {
+        String ids[] = specIds.split(",");
+        List<String> specIdsList = new ArrayList<>();
+        //与for相同，将String数组添加到list中
+        Collections.addAll(specIdsList,ids);
+        return itemsMapperCustom.queryItemsBySpecIds(specIdsList);
     }
 
     /**
