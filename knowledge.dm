@@ -3,7 +3,7 @@
     //http://localhost:8088/doc.html
     //http://localhost:8080/foodie-shop/register.html
 
-当子工程模块有改动的时候需要 install 如直接改api工程controller不需要install
+当子工程模块有改动的时候需要 install 如直接改api（启动类在本模块）工程controller不需要install
 1、 获取商品子分类使用递归查询
     < !--     MyBatis.xml
           column 对应 SQL (as proId) property对应 vo
@@ -44,7 +44,7 @@
    前端首先要删掉现有购物车cookie，拿到最新商品后重新组合购物车数据（商品数量），重新获取cookie中的商品list渲染到页面
    删除商品需要判断是否登录（以传入的规格Id及userId），若没有登录删除（以规格Id做标识）浏览器cookie中数据后购物车商品重新放入cookie再更新（前端做判断），
    若登录需删除redis介质中的数据，之后重新计算购物车中选中的件数及总价   删除方式有选中复选框和单个删除两种情况
-
+   结算订单若没有登录会跳转至登录页面登录，登录成功后直接重定向至购物车页面
 
 
 
