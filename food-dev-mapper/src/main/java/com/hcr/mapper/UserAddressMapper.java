@@ -1,4 +1,7 @@
 package com.hcr.mapper;
 
-public interface UserAddressMapper {
+import com.hcr.my.mapper.MyMapper;
+import com.hcr.pojo.UserAddress;
+
+public interface UserAddressMapper extends MyMapper<UserAddress> {
 }
