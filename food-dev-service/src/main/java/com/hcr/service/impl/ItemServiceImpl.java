@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.hcr.mapper.*;
 import com.hcr.menus.CommentLevel;
+import com.hcr.menus.YseOrNo;
 import com.hcr.pojo.*;
 import com.hcr.service.ItemService;
 import com.hcr.utils.DesensitizationUtil;
@@ -152,6 +153,32 @@ public class ItemServiceImpl implements ItemService {
         //与for相同，将String数组添加到list中
         Collections.addAll(specIdsList,ids);
         return itemsMapperCustom.queryItemsBySpecIds(specIdsList);
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public ItemsSpec queryItemSpecById(String specId) {
+        return itemsSpecMapper.selectByPrimaryKey(specId);
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public String queryItemMainImgById(String itemId) {
+        ItemsImg itemsImg = new ItemsImg();
+        itemsImg.setItemId(itemId);
+        itemsImg.setIsMain(YseOrNo.YSE.type);
+        ItemsImg result = itemsImgMapper.selectOne(itemsImg);
+        return result != null ? result.getUrl() : "";
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    @Override
+    public void decreaseItemSpecStock(String specId, int buyCounts) {
+
+        int result = itemsMapperCustom.decreaseItemSpecStock(specId,buyCounts);
+        if (result != 1){
+            throw new RuntimeException("订单创建失败：原因：库存不足！");
+        }
     }
 
     /**
