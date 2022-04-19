@@ -46,6 +46,33 @@
    若登录需删除redis介质中的数据，之后重新计算购物车中选中的件数及总价   删除方式有选中复选框和单个删除两种情况
    结算订单若没有登录会跳转至登录页面登录，登录成功后直接重定向至购物车页面
 
+6、创建订单预防买超单体下synchronized虽然可以使用但是性能低下且在集群下无用，不同服务器下线程仍然可以抢占同一商品
+   订单使用锁方法：
+   // synchronized 不推荐使用，集群下无用，性能低下
+   // 锁数据库: 不推荐，导致数据库性能低下
+   // 分布式锁 zookeeper redis
+
+   // lockUtil.getLock(); -- 加锁
+   // 1. 查询库存
+   //  int stock = 10;
+
+    // 2. 判断库存，是否能够减少到0以下
+   //  if (stock - buyCounts < 0) {
+   // 提示用户库存不够
+  //  如：10 - 3 -3 - 5 = -1
+  //        }
+  // lockUtil.unLock(); -- 解锁
+
+   int result = itemsMapperCustom.decreaseItemSpecStock(specId, buyCounts);
+          if (result != 1) {
+              throw new RuntimeException("订单创建失败，原因：库存不足!");
+          }
+
+  SQL状态更新判断：update items_spec
+                 set  stock = stock - #{pendingCounts}
+                 where  id = #{specId}
+                 and  stock >= #{pendingCounts}
+
 
 
 为什么存储过程可以提速？
