@@ -3,6 +3,7 @@ package com.hcr.controller;
 import com.hcr.bo.SubmitOrderBO;
 import com.hcr.menus.OrderStatusEnum;
 import com.hcr.menus.PayMethod;
+import com.hcr.pojo.OrderStatus;
 import com.hcr.service.OrderService;
 import com.hcr.utils.JSONResult;
 import com.hcr.vo.MerchantOrdersVO;
@@ -64,6 +65,9 @@ public class OrdersController extends BaseController{
         MerchantOrdersVO merchantOrdersVO = orderVO.getMerchantOrdersVO();
         merchantOrdersVO.setReturnUrl(payReturnUrl);
 
+        // 为了方便测试购买，所以所有的支付金额都统一改为1分钱
+        merchantOrdersVO.setAmount(1);
+
         // 请求头设置,格式 application/json
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
@@ -94,5 +98,12 @@ public class OrdersController extends BaseController{
     public Integer notifyMerchantOrderPaid(String merchantOrderId) {
         orderService.updateOrderStatus(merchantOrderId, OrderStatusEnum.WAIT_DELIVER.type);
         return HttpStatus.OK.value();
+    }
+
+    @PostMapping("getPaidOrderInfo")
+    public JSONResult getPaidOrderInfo(String orderId) {
+
+        OrderStatus orderStatus = orderService.queryOrderStatusInfo(orderId);
+        return JSONResult.ok(orderStatus);
     }
 }

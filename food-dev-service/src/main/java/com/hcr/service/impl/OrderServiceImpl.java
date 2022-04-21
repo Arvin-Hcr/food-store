@@ -151,7 +151,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderStatus queryOrderStatusInfo(String orderId) {
-        return null;
+        return orderStatusMapper.selectByPrimaryKey(orderId);
     }
 
     @Override
