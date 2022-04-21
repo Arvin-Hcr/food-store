@@ -16,8 +16,8 @@ public class BaseController {
 
     // 微信支付成功 -> 支付中心 -> 天天吃货平台
     //                       |-> 回调通知的url
-    //内网穿透，即可访问本地服务器
-    String payReturnUrl = "http://dzgm2a.natappfree.cc/foodie-dev-api/orders/notifyMerchantOrderPaid";
+    //内网穿透，即可访问本地服务器 【http://uyyqw9.natappfree.cc 免费注册的每次使用需要重新Forwarding】
+    String payReturnUrl = "http://uyyqw9.natappfree.cc/orders/notifyMerchantOrderPaid";
 
     // 用户上传头像的位置
     public static final String IMAGE_USER_FACE_LOCATION = File.separator + "workspaces" +

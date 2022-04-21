@@ -86,7 +86,7 @@ public class OrdersController extends BaseController{
             return JSONResult.errorMsg("支付中心订单创建失败，请联系管理员！");
         }
 
-        return JSONResult.ok(orderVO);
+        return JSONResult.ok(orderId);
     }
 
     /**
