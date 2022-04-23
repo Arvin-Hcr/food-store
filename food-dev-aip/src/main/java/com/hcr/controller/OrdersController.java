@@ -90,7 +90,7 @@ public class OrdersController extends BaseController{
     }
 
     /**
-     * 调用支付中心更新状态
+     * 回调支付中心更新状态
      * @param merchantOrderId
      * @return
      */
