@@ -46,6 +46,43 @@
    若登录需删除redis介质中的数据，之后重新计算购物车中选中的件数及总价   删除方式有选中复选框和单个删除两种情况
    结算订单若没有登录会跳转至登录页面登录，登录成功后直接重定向至购物车页面
 
+6、创建订单预防买超单体下synchronized虽然可以使用但是性能低下且在集群下无用，不同服务器下线程仍然可以抢占同一商品
+   订单使用锁方法：
+   // synchronized 不推荐使用，集群下无用，性能低下
+   // 锁数据库: 不推荐，导致数据库性能低下
+   // 分布式锁 zookeeper redis
+
+   // lockUtil.getLock(); -- 加锁
+   // 1. 查询库存
+   //  int stock = 10;
+
+    // 2. 判断库存，是否能够减少到0以下
+   //  if (stock - buyCounts < 0) {
+   // 提示用户库存不够
+  //  如：10 - 3 -3 - 5 = -1
+  //        }
+  // lockUtil.unLock(); -- 解锁
+
+   int result = itemsMapperCustom.decreaseItemSpecStock(specId, buyCounts);
+          if (result != 1) {
+              throw new RuntimeException("订单创建失败，原因：库存不足!");
+          }
+
+  SQL状态更新判断：update items_spec
+                 set  stock = stock - #{pendingCounts}
+                 where  id = #{specId}
+                 and  stock >= #{pendingCounts}
+
+  6.1、支付完成跳转支付成功页面使用轮询方法查询结果，可设置每隔3s查询一次，如当支付状态查询到为20时跳转支付成功页面
+  （仿京东，微信二维码过期时间为2h，在支付中心设置二维码过期时间应小于2h，否则有延迟二维码会失效）
+  跳转支付中心参数（订单号，金额，回调地址，时间，支付方式），付款成功调用回调地址更新支付状态
+
+ 7、内网穿透，当本地服务开启时，公网是不可以访问的，可通过https://natapp.cn自行注册（免费）个人账户，根据新手指引做，当隧道打通之后
+ 公网即可访问，如用手机流量访问本地接口，若访问成功则隧道打通    natapp -authtoken=e32950e8876e0b13
+
+
+
+
 
 
 为什么存储过程可以提速？
