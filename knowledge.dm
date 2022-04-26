@@ -306,7 +306,14 @@ sudo useradd+用户名          sudo用于普通用户使用管理员权限执�
 4、接口中的所有成员变量 为public static final， 静态不可修改，当然必须初始化。接口中的所有方法都是public abstract 公开抽象的。而且不能有构造方法。抽象类就比较自由了，和普通的类差不多，可以有抽象方法也可以没有，可以有正常的方法，也可以没有。
 
 
+updateByPrimaryKeySelective（Object obj）
+updateByPrimaryKeySelective 接收的参数为对应于数据库的实体类对象，利用字段的自动匹配进行更新表的操作，如果传入obj对象中的某个属性值为null，则不进行数据库对应字段的更新。
 
+updateByPrimaryKey（Object obj）
+与updateByPrimaryKeySelective的区别在于，如果传入的obj对象中某个属性值为null，会将对应的数据库字段赋值为null
+
+updateByExample是传入一个对象,将整条数据都更新,如果对象中没有值的属性,就自动设置为null.
+updateByExampleSelective是将一行中某几个属性更新,而不改变其他的值
 
 
 
