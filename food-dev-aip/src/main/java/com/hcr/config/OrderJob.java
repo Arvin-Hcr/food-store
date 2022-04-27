@@ -27,7 +27,7 @@ public class OrderJob {
      */
 
     //根据实际业务需求更改时间
-    @Scheduled(cron = "0/3 * * * * ?")
+   // @Scheduled(cron = "0/3 * * * * ?")
     public void autoCloseOrder(){
         orderService.closeOrder();
     }

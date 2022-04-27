@@ -103,6 +103,7 @@ public class PassportController {
             return JSONResult.errorMsg("用户名或密码不正确");
         }
 
+        //user->key  userResult->value
         userResult = setNullProperty(userResult);
         CookieUtils.setCookie(request,response,"user",
                 JsonUtils.objectToJson(userResult),true);
@@ -111,6 +112,11 @@ public class PassportController {
 
     }
 
+    /**
+     * 返回前端，将用户私密信息设为空(保存在cookie中不安全)
+     * @param userResult
+     * @return
+     */
     private Users setNullProperty(Users userResult){
         userResult.setPassword(null);
         userResult.setMobile(null);

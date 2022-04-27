@@ -32,11 +32,15 @@ spring:
       max-lifetime: 1800000
       #测试链接
       connection-test-query: SELECT 1
+  servlet:
+    multipart:
+      max-file-size: 512000      # 文件上传大小限制为500kb
+      max-request-size: 512000   # 请求大小限制为500kb
 
 #################### mybatis配置 #############################
 mybatis:
   #所有POJO类所在包路径
-  type-aliases-package: com.imooc.pojo
+  type-aliases-package: com.hcr.pojo
   #mapper映射
   mapper-locations: classpath:mapper/*.xml
   #开启MyBatis日志Sql控制台打印  仅在开发测试环境是使用，生产环境注掉
