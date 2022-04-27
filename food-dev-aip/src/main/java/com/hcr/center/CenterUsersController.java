@@ -72,6 +72,7 @@ public class CenterUsersController {
                     //获取文件的后缀名  索引下标是以0开始的，所以-1
                     String suffix = fileNameArr[fileNameArr.length - 1];
 
+                    //图片限制格式以防后门  黑客会绕过前端直接访问接口，向服务器上传一些  .sh  .php 文件，成功后对方可以通过浏览器直接访问相应的文件
                     if (!suffix.equalsIgnoreCase("png") &&
                         !suffix.equalsIgnoreCase("jpg") &&
                         !suffix.equalsIgnoreCase("jpeg")){
