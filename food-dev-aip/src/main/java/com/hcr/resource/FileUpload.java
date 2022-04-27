@@ -4,6 +4,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
+/**
+ * 属性资源文件与类映射
+ */
 //组件让springboot扫描
 @Component
 //属性资源文件配置 前缀
