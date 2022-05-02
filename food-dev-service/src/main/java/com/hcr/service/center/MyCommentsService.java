@@ -1,5 +1,6 @@
 package com.hcr.service.center;
 
+import com.hcr.bo.center.OrderItemsCommentBO;
 import com.hcr.pojo.OrderItems;
 
 import java.util.List;
@@ -12,4 +13,12 @@ public interface MyCommentsService {
      * @return
      */
     public List<OrderItems> queryPendingComment(String orderId);
+
+    /**
+     * 保存用户的评论
+     * @param orderId
+     * @param userId
+     * @param commentList
+     */
+    public void saveComments(String orderId, String userId, List<OrderItemsCommentBO> commentList);
 }

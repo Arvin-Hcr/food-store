@@ -19,7 +19,8 @@
         updated_time
       )
     values
-      <foreach collection="commentList" item="item" index="index" separator=",">
+      <!--item 属性-->
+      <foreach collection="commentList" item="item"  index="index" separator=",">
       (
         #{item.commentId},
         #{userId},
