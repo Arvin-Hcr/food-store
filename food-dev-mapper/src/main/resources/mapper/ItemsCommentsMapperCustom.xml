@@ -19,7 +19,8 @@
         updated_time
       )
     values
-      <foreach collection="commentList" item="item" index="index" separator=",">
+      <!--item 属性-->
+      <foreach collection="commentList" item="item"  index="index" separator=",">
       (
         #{item.commentId},
         #{userId},
@@ -64,6 +65,7 @@
     WHERE
         ic.user_id = #{paramsMap.userId}
     AND
+--     商品对应的主图
         ii.is_main = 1
     ORDER BY
         ic.created_time

@@ -1,5 +1,9 @@
 package com.hcr.controller;
 
+import com.hcr.pojo.Orders;
+import com.hcr.service.center.MyOrdersService;
+import com.hcr.utils.JSONResult;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import java.io.File;
@@ -26,5 +30,20 @@ public class BaseController {
             File.separator + "faces";
 //    public static final String IMAGE_USER_FACE_LOCATION = "/workspaces/images/foodie/faces";
 
+
+    @Autowired
+    public MyOrdersService myOrdersService;
+
+    /**
+     * 用于验证用户和订单是否有关联关系，避免非法用户调用
+     * @return
+     */
+    public JSONResult checkUserOrder(String userId, String orderId) {
+        Orders order = myOrdersService.queryMyOrder(userId, orderId);
+        if (order == null) {
+            return JSONResult.errorMsg("订单不存在！");
+        }
+        return JSONResult.ok(order);
+    }
 
 }
