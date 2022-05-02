@@ -66,8 +66,10 @@
         oi.order_id = #{orderId}
 
     </select>
-    
 
+
+<!--    分页插件不支持嵌套结果映射-->
+<!--    由于嵌套结果方式会导致结果集被折叠，因此分页查询的结果在折叠后总数会减少，所以无法保证分页结果数量正确。-->
     <select id="queryMyOrdersDoNotUse" resultMap="myOrdersVO" parameterType="Map">
         SELECT
         od.id as orderId,
