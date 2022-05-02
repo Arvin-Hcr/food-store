@@ -315,7 +315,8 @@ updateByPrimaryKey（Object obj）
 updateByExample是传入一个对象,将整条数据都更新,如果对象中没有值的属性,就自动设置为null.
 updateByExampleSelective是将一行中某几个属性更新,而不改变其他的值
 
-
+映射关系 <result column="slogan" property="slogan"/> column 为sql脚本  property为vo属性
+ic.id as 【 commentId -> 为sql脚本】
 
 
 

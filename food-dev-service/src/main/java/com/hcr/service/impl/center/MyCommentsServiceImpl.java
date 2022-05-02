@@ -1,5 +1,6 @@
 package com.hcr.service.impl.center;
 
+import com.github.pagehelper.PageHelper;
 import com.hcr.bo.center.OrderItemsCommentBO;
 import com.hcr.mapper.ItemsCommentsMapperCustom;
 import com.hcr.mapper.OrderItemsMapper;
@@ -11,6 +12,8 @@ import com.hcr.pojo.OrderItems;
 import com.hcr.pojo.OrderStatus;
 import com.hcr.pojo.Orders;
 import com.hcr.service.center.MyCommentsService;
+import com.hcr.utils.PagedGridResult;
+import com.hcr.vo.MyCommentVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -74,6 +77,16 @@ public class MyCommentsServiceImpl extends BaseService implements MyCommentsServ
 
     }
 
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public PagedGridResult queryMyComments(String userId, Integer page, Integer pageSize) {
+
+        Map<String ,Object> map = new HashMap<>();
+        map.put("userId",userId);
+        PageHelper.startPage(page,pageSize);
+        List<MyCommentVO> list = itemsCommentsMapperCustom.queryMyComments(map);
+        return setterPagedGrid(list,page);
+    }
 
 
 }

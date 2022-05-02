@@ -65,6 +65,7 @@
     WHERE
         ic.user_id = #{paramsMap.userId}
     AND
+--     商品对应的主图
         ii.is_main = 1
     ORDER BY
         ic.created_time
