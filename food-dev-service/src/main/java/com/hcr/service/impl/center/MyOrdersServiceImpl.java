@@ -129,6 +129,11 @@ public class MyOrdersServiceImpl extends BaseService implements MyOrdersService 
         return result == 1 ? true : false;
     }
 
+    /**
+     * 订单概况分四次调用统计查询，将统计结果返回VO
+     * @param userId
+     * @return
+     */
     @Transactional(propagation=Propagation.SUPPORTS)
     @Override
     public OrderStatusCountsVO getOrderStatusCounts(String userId) {
@@ -145,6 +150,7 @@ public class MyOrdersServiceImpl extends BaseService implements MyOrdersService 
         map.put("orderStatus", OrderStatusEnum.WAIT_RECEIVE.type);
         int waitReceiveCounts = ordersMapperCustom.getMyOrderStatusCounts(map);
 
+        //确认收货，未评价 --> 0
         map.put("orderStatus", OrderStatusEnum.SUCCESS.type);
         map.put("isComment", YseOrNo.NO.type);
         int waitCommentCounts = ordersMapperCustom.getMyOrderStatusCounts(map);
