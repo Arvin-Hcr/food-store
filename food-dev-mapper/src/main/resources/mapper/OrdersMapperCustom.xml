@@ -143,6 +143,7 @@
         WHERE
           o.is_delete = 0
         AND
+--         使用map对后续扩展，paramsMap兼容性更好
           o.user_id = #{paramsMap.userId}
         AND
           os.order_status in (20, 30, 40)
