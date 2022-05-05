@@ -1,7 +1,7 @@
 ################### 内置 Tomcat #############################
 #web访问端口号   约定8088
 server:
-  port: 8088
+  #port: 8088
   tomcat:
     uri-encoding: UTF-8
     max-http-post-size: 80KB
@@ -9,12 +9,14 @@ server:
 
 ################### 数据源配置 ########################################
 spring:
+  profiles:
+    active: dev            #激活挂载文件，不同环境使用不同配置
   datasource:
     type: com.zaxxer.hikari.HikariDataSource    #數據源類型:HikariDataSource
-    url: jdbc:mysql://localhost:3306/foodie-shop?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=UTC
+   # url: jdbc:mysql://localhost:3306/foodie-shop?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=UTC
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password: root
+   # password: root
     hikari:
       #等待连接池最大时长（毫秒）默认：30s
       connection-timeout: 30000
@@ -44,8 +46,8 @@ mybatis:
   #mapper映射
   mapper-locations: classpath:mapper/*.xml
   #开启MyBatis日志Sql控制台打印  仅在开发测试环境是使用，生产环境注掉
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 ############################################################
 #
 # mybatis mapper 配置
