@@ -15,7 +15,7 @@ public class BaseController {
 
     public static final Integer PAGE_SIZE = 20;
 
-    // 支付中心的调用地址
+    // 支付中心的调用地址  调用支付端nginx，若待端口号则是对外开放不走nginx
     String paymentUrl = "http://payment.t.mukewang.com/foodie-payment/payment/createMerchantOrder";		// produce
 
     // 微信支付成功 -> 支付中心 -> 天天吃货平台
