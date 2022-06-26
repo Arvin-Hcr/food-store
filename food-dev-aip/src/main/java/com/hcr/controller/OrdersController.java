@@ -6,6 +6,7 @@ import com.hcr.menus.OrderStatusEnum;
 import com.hcr.menus.PayMethod;
 import com.hcr.pojo.OrderStatus;
 import com.hcr.service.OrderService;
+import com.hcr.utils.CookieUtils;
 import com.hcr.utils.JSONResult;
 import com.hcr.utils.JsonUtils;
 import com.hcr.utils.RedisOperator;
@@ -71,8 +72,11 @@ public class OrdersController extends BaseController{
          * 3003 -> 用户购买
          * 4004
          */
-        // TODO 整合redis之后，完善购物车中的已结算商品清除，并且同步到前端的cookie
-//        CookieUtils.setCookie(request, response, FOODIE_SHOPCART, "", true);
+        //清理覆盖现有的redis汇总的购物车数据
+        shopcartBOList.removeAll(orderVO.toBeRemovedShopcartdList());
+        redisOperator.set(FOODIE_SHOPCART + ":" + submitOrderBO.getUserId(),JsonUtils.objectToJson(shopcartBOList));
+        // 整合redis之后，完善购物车中的已结算商品清除，并且同步到前端的cookie
+        CookieUtils.setCookie(request, response, FOODIE_SHOPCART,JsonUtils.objectToJson(shopcartBOList), true);
 
         // 3. 向支付中心发送当前订单，用于保存支付中心的订单数据
         MerchantOrdersVO merchantOrdersVO = orderVO.getMerchantOrdersVO();

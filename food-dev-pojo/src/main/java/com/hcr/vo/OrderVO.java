@@ -1,9 +1,22 @@
 package com.hcr.vo;
 
+import com.hcr.bo.ShopcartBO;
+
+import java.util.List;
+
 public class OrderVO {
 
     private String orderId;
     private MerchantOrdersVO merchantOrdersVO;
+    private List<ShopcartBO> toBeRemovedShopcartdList;
+
+    public List<ShopcartBO> toBeRemovedShopcartdList() {
+        return toBeRemovedShopcartdList;
+    }
+
+    public void toBeRemovedShopcartdList(List<ShopcartBO> toBeRemovedShopcartdList) {
+        this.toBeRemovedShopcartdList = toBeRemovedShopcartdList;
+    }
 
     public String getOrderId() {
         return orderId;
