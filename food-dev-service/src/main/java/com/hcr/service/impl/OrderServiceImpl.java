@@ -1,5 +1,6 @@
 package com.hcr.service.impl;
 
+import com.hcr.bo.ShopcartBO;
 import com.hcr.bo.SubmitOrderBO;
 import com.hcr.mapper.OrderItemsMapper;
 import com.hcr.mapper.OrderStatusMapper;
@@ -46,7 +47,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
-    public OrderVO createOrder(SubmitOrderBO submitOrderBO) {
+    public OrderVO createOrder(List<ShopcartBO> shopcartBOList, SubmitOrderBO submitOrderBO) {
 
         String userId = submitOrderBO.getUserId();
         String addressId = submitOrderBO.getAddressId();
@@ -81,9 +82,9 @@ public class OrderServiceImpl implements OrderService {
         Integer totalAmount = 0; //商品原件累计
         Integer realPayAmount = 0; //优惠后的实际支付价格累计
         for (String itemSpecId : itemSpecIdArr) {
-
-            // TODO 整合redis后，商品购买的数量重新从redis的购物车中获取
-            int buyCounts = 1;
+            ShopcartBO cartItem = getByCountsFormShopcart(shopcartBOList,itemSpecId);
+            //整合redis，商品购买的数量重新从redis的购物车中获取
+            int buyCounts = cartItem.getBuyCounts();
 
             //2.1 根据规格id，查询规格的具体信息，主要获取价格
             ItemsSpec itemsSpec = itemService.queryItemSpecById(itemSpecId);
@@ -139,6 +140,22 @@ public class OrderServiceImpl implements OrderService {
         return orderVO;
     }
 
+    /**
+     * 从redis中的购物车里获取商品，目的：计数 counts
+     * @param shopcartBOList
+     * @param specId
+     * @return
+     */
+    private ShopcartBO getByCountsFormShopcart(List<ShopcartBO> shopcartBOList, String specId ){
+
+        for (ShopcartBO cart : shopcartBOList){
+            if (cart.getSpecId().equals(specId)){
+                return cart;
+            }
+        }
+        return null;
+    }
+
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public void updateOrderStatus(String orderId, Integer orderStatus) {
@@ -185,4 +202,7 @@ public class OrderServiceImpl implements OrderService {
         close.setCloseTime(new Date());
         orderStatusMapper.updateByPrimaryKeySelective(close);
     }
+
 }
+
+

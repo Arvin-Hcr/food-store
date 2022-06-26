@@ -83,7 +83,15 @@ public class IndexController {
             return JSONResult.errorMsg("分类不存在");
         }
 
-        List<CategoryVO> list = categoryService.getSubCatList(rootCatId);
+        List<CategoryVO> list = new ArrayList<>();
+        String catStr = redisOperator.get("subCat:" + rootCatId);
+        if (StringUtils.isBlank(catStr)){
+            list =  categoryService.getSubCatList(rootCatId);
+            redisOperator.set("subCat:" + rootCatId,JsonUtils.objectToJson(list));
+        }else {
+            list = JsonUtils.jsonToList(catStr,CategoryVO.class);
+        }
+
         return JSONResult.ok(list);
     }
 

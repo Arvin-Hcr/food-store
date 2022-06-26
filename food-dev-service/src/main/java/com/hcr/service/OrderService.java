@@ -1,8 +1,11 @@
 package com.hcr.service;
 
+import com.hcr.bo.ShopcartBO;
 import com.hcr.bo.SubmitOrderBO;
 import com.hcr.pojo.OrderStatus;
 import com.hcr.vo.OrderVO;
+
+import java.util.List;
 
 public interface OrderService {
 
@@ -10,7 +13,7 @@ public interface OrderService {
      * 用于创建订单相关信息
      * @param submitOrderBO
      */
-    public OrderVO createOrder(SubmitOrderBO submitOrderBO);
+    public OrderVO createOrder(List<ShopcartBO> shopcartBOList, SubmitOrderBO submitOrderBO);
 
     /**
      * 修改订单状态

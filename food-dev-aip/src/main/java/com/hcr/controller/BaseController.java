@@ -3,6 +3,7 @@ package com.hcr.controller;
 import com.hcr.pojo.Orders;
 import com.hcr.service.center.MyOrdersService;
 import com.hcr.utils.JSONResult;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -10,6 +11,8 @@ import java.io.File;
 
 @Controller
 public class BaseController {
+
+    public static final String FOODIE_SHOPCART = "shopcart";
 
     public static final Integer COMMON_PAGE_SIZE = 10;
 
