@@ -17,7 +17,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/**")
                 .addResourceLocations("classpath:/META-INF/resources/")  // 映射swagger2
                 //http://localhost:8088/images/220427FN4N3A0H94/face-220427FN4N3A0H9420220427203518.png
-                .addResourceLocations("file:H:\\\\videos\\\\workspaces\\\\images");  // 映射本地静态资源
+                //.addResourceLocations("file:H:\\\\videos\\\\workspaces\\\\images");  // 映射本地静态资源 映射该目录下的所有文件
+                .addResourceLocations("file:/workspaces/images/");  //生产环境
     }
 
     //构建一个bean让容器扫描到

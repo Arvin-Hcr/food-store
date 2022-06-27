@@ -6,7 +6,6 @@ import com.hcr.menus.YseOrNo;
 import com.hcr.org.n3r.idworker.Sid;
 import com.hcr.pojo.UserAddress;
 import com.hcr.service.AddressService;
-import org.apache.catalina.User;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -85,8 +85,11 @@ public class CenterUsersController {
                     //上传的头像最终保存的位置
                     String finalFacePath = fileSpace + uploadPathPrefix + File.separator + newFileName;
 
-                    //用于提供web服务访问的地址
-                    uploadPathPrefixWin += ("/" + newFileName);
+                    //用于提供web服务访问的地址(本地)
+                    //uploadPathPrefixWin += ("/" + newFileName);
+
+                    //生产用于提供web服务访问的地址
+                    uploadPathPrefix += ("/" + newFileName);
 
                     File outFile = new File(finalFacePath);
                     if (outFile.getParentFile() != null) {
@@ -117,7 +120,10 @@ public class CenterUsersController {
         String imageServerUrl = fileUpload.getImageServerUrl();
 
         // 由于浏览器可能存在缓存的情况，所以需要加上时间戳来保证更新后的图片可以及时刷新
-        String finalUserFaceUrl = imageServerUrl + uploadPathPrefixWin
+       // String finalUserFaceUrl = imageServerUrl + uploadPathPrefixWin
+         //       + "?t=" + DateUtil.getCurrentDateString(DateUtil.DATE_PATTERN);
+        //生产
+        String finalUserFaceUrl = imageServerUrl + uploadPathPrefix
                 + "?t=" + DateUtil.getCurrentDateString(DateUtil.DATE_PATTERN);
 
         // 更新用户头像到数据库

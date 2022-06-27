@@ -51,13 +51,13 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <!-- 打包war [2] 移除自带内置tomcat -->
-            <!-- <exclusions>
-                 <exclusion>
-                     <artifactId>spring-boot-starter-tomcat</artifactId>
-                     <groupId>org.springframework.boot</groupId>
-                 </exclusion>
-             </exclusions>-->
+            <!-- 打包war [2] 移除自带内置tomcat 本地启动需要注释掉 -->
+<!--             <exclusions>-->
+<!--                 <exclusion>-->
+<!--                     <artifactId>spring-boot-starter-tomcat</artifactId>-->
+<!--                     <groupId>org.springframework.boot</groupId>-->
+<!--                 </exclusion>-->
+<!--             </exclusions>-->
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -74,6 +74,13 @@
             <artifactId>mapper-spring-boot-starter</artifactId>
             <version>2.1.5</version>
         </dependency>
+
+        <!-- 引入 redis 依赖 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
         <!--pagehelper -->
         <dependency>
             <groupId>com.github.pagehelper</groupId>
@@ -149,5 +156,11 @@
             <artifactId>slf4j-log4j12</artifactId>
             <version>1.7.21</version>
         </dependency>
+        <!-- 移除内置Tomcat，也会移除相关servlet  打包war [3] 添加依赖-->
+<!--        <dependency>-->
+<!--            <groupId>javax.servlet</groupId>-->
+<!--            <artifactId>javax.servlet-api</artifactId>-->
+<!--            <scope>provided</scope>-->
+<!--        </dependency>-->
     </dependencies>
 </project>
