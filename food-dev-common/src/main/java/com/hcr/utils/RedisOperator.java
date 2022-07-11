@@ -1,5 +1,6 @@
 package com.hcr.utils;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -101,6 +102,15 @@ public class RedisOperator {
 	 */
 	public String get(String key) {
 		return (String)redisTemplate.opsForValue().get(key);
+	}
+
+	/**
+	 * 批量查询，对应mget
+	 * @param keys
+	 * @return
+	 */
+	public List<String> mget(List<String > keys) {
+		return redisTemplate.opsForValue().multiGet(keys);
 	}
 
 	// Hash（哈希表）
