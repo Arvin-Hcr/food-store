@@ -1,10 +1,12 @@
 package com.hcr.center;
 
 import com.hcr.bo.center.CenterUserBO;
+import com.hcr.controller.BaseController;
 import com.hcr.pojo.Users;
 import com.hcr.resource.FileUpload;
 import com.hcr.service.center.CenterUserService;
 import com.hcr.utils.*;
+import com.hcr.vo.UsersVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -30,7 +32,7 @@ import java.util.Map;
 @Api(value = "用户信息接口", tags = {"用户信息相关接口"})
 @RestController
 @RequestMapping("userInfo")
-public class CenterUsersController {
+public class CenterUsersController extends BaseController {
 
     @Autowired
     private CenterUserService centerUserService;
@@ -129,11 +131,13 @@ public class CenterUsersController {
         // 更新用户头像到数据库
         Users userResult = centerUserService.updateUserFace(userId, finalUserFaceUrl);
 
-        userResult = setNullProperty(userResult);
-         CookieUtils.setCookie(request, response, "user",
-                 JsonUtils.objectToJson(userResult), true);
+        //userResult = setNullProperty(userResult);
 
-        // TODO 后续要改，增加令牌token，会整合进redis，分布式会话
+        //增加令牌token，会整合进redis，分布式会话
+        UsersVO usersVO = conventUsersVO(userResult);
+
+         CookieUtils.setCookie(request, response, "user",
+                 JsonUtils.objectToJson(usersVO), true);
 
         return JSONResult.ok();
     }
@@ -156,11 +160,13 @@ public class CenterUsersController {
 
         Users users = centerUserService.updateUserInfo(userId, centerUserBO);
 
-        users = setNullProperty(users);
-        CookieUtils.setCookie(request,response,"user",
-                                JsonUtils.objectToJson(users),true);
+       // users = setNullProperty(users);
 
-        //TODO 后续要改，增加令牌token，会整合进redis，分布式会话
+        //增加令牌token，会整合进redis，分布式会话
+        UsersVO usersVO = conventUsersVO(users);
+        CookieUtils.setCookie(request,response,"user",
+                                JsonUtils.objectToJson(usersVO),true);
+
         return JSONResult.ok();
     }
 

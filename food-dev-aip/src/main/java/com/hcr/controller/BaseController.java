@@ -1,22 +1,32 @@
 package com.hcr.controller;
 
 import com.hcr.pojo.Orders;
+import com.hcr.pojo.Users;
 import com.hcr.service.center.MyOrdersService;
 import com.hcr.utils.JSONResult;
+import com.hcr.utils.RedisOperator;
+import com.hcr.vo.UsersVO;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import java.io.File;
+import java.util.UUID;
 
 @Controller
 public class BaseController {
+
+    @Autowired
+    private RedisOperator redisOperator;
 
     public static final String FOODIE_SHOPCART = "shopcart";
 
     public static final Integer COMMON_PAGE_SIZE = 10;
 
     public static final Integer PAGE_SIZE = 20;
+
+    public static final String REDIS_USER_TOKEN = "REDIS_USER_TOKEN";
 
     // 支付中心的调用地址  调用支付端nginx，若待端口号则是对外开放不走nginx
     String paymentUrl = "http://payment.t.mukewang.com/foodie-payment/payment/createMerchantOrder";		// produce
@@ -49,4 +59,14 @@ public class BaseController {
         return JSONResult.ok(order);
     }
 
+    public UsersVO conventUsersVO(Users users){
+
+        String uniqueToken = UUID.randomUUID().toString().trim();  //可使用base64进行加密来作为token
+        redisOperator.set(REDIS_USER_TOKEN + ":" + users.getId(),uniqueToken); //不会过期，永久有效
+
+        UsersVO usersVO = new UsersVO();
+        BeanUtils.copyProperties(users,usersVO);
+        usersVO.setUserUniqueToken(uniqueToken);
+        return usersVO;
+    }
 }

@@ -1,10 +1,15 @@
 package com.hcr.utils;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.connection.StringRedisConnection;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
@@ -101,6 +106,36 @@ public class RedisOperator {
 	 */
 	public String get(String key) {
 		return (String)redisTemplate.opsForValue().get(key);
+	}
+
+	/**
+	 * 批量查询，对应mget，每次查询都会有连接关闭---只能为字符串
+	 * @param keys
+	 * @return
+	 */
+	public List<String> mget(List<String > keys) {
+		return redisTemplate.opsForValue().multiGet(keys);
+	}
+
+	/**
+	 * 以管道形式，不用关注redis的连接和关闭---可以批量有多种类型-get set |long类型...
+	 * @param keys
+	 * @return
+	 */
+	public List<Object> batchGet(List<String > keys) {
+		List<Object> result = redisTemplate.executePipelined(new RedisCallback<Object>() {
+			@Override
+			public Object doInRedis(RedisConnection redisConnection) throws DataAccessException {
+				StringRedisConnection src = (StringRedisConnection) redisConnection;
+				for (String k : keys){
+					src.get(k);
+					//src.mGet(k);
+					//src.set("kk", String.valueOf(234));
+				}
+				return null;
+			}
+		});
+		return result;
 	}
 
 	// Hash（哈希表）
