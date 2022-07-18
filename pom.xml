@@ -75,6 +75,18 @@
             <version>2.1.5</version>
         </dependency>
 
+<!--        引入spring-session依赖-->
+        <dependency>
+            <groupId>org.springframework.session</groupId>
+            <artifactId>spring-session-data-redis</artifactId>
+        </dependency>
+
+        <!--引入spring安全框架-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-security</artifactId>-->
+<!--        </dependency>-->
+
         <!-- 引入 redis 依赖 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
