@@ -19,7 +19,7 @@ public class UserTokenInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-        System.out.println("进入到拦截器，被拦截...");
+        //System.out.println("进入到拦截器，被拦截...");
 
         /**
          * false：请求被拦截，被驳回，验证出现问题
