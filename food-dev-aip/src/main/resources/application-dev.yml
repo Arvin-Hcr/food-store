@@ -8,7 +8,7 @@ spring:
    redis:
   #单机单实例
     database: 1
-    host: localhost  本地
+    host: localhost  #本地
     #host: 192.168.50.131
     port: 6379
     #password: redis
