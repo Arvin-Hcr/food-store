@@ -27,7 +27,6 @@ public class CenterController {
             @RequestParam String userId){
 
         Users users = centerUserService.queryUserInfo(userId);
-        System.out.println(userId);
         return JSONResult.ok(users);
     }
 }
