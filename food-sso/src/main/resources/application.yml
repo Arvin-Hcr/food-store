@@ -1,0 +1,69 @@
+################### 内置 Tomcat #############################
+#web访问端口号   约定8088
+server:
+  #port: 8088
+  tomcat:
+    uri-encoding: UTF-8
+    max-http-post-size: 80KB
+
+
+################### 数据源配置 ########################################
+spring:
+  profiles:
+    active: dev            #激活挂载文件，不同环境使用不同配置
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource    #數據源類型:HikariDataSource
+   # url: jdbc:mysql://localhost:3306/foodie-shop?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+   # password: root
+    hikari:
+      #等待连接池最大时长（毫秒）默认：30s
+      connection-timeout: 30000
+      #最小连接数
+      minimum-idle: 5
+      #最大连接数
+      maximum-pool-size: 20
+      #自动提交
+      auto-commit: true
+      #链接超时的最大时长，超过释放（retired），默认：10分钟
+      idle-timeout: 600000
+      #链接池名字
+      pool-name: DateSourceHikariCP
+      #链接的生命时长（毫秒）,超过没有使用被释放（retired），默认：30分钟  1800000ms
+      max-lifetime: 1800000
+      #测试链接
+      connection-test-query: SELECT 1
+  servlet:
+    multipart:
+      max-file-size: 512000      # 文件上传大小限制为500kb
+      max-request-size: 512000   # 请求大小限制为500kb
+  #session:
+  #  store-type: redis
+
+  thymeleaf:      #映射页面
+    mode: HTML
+    encoding: UTF-8
+    prefix: classpath:/templates/    #前缀
+    suffix: .html                   #后缀
+#################### mybatis配置 #############################
+mybatis:
+  #所有POJO类所在包路径
+  type-aliases-package: com.hcr.pojo
+  #mapper映射
+  mapper-locations: classpath:mapper/*.xml
+  #开启MyBatis日志Sql控制台打印  仅在开发测试环境是使用，生产环境注掉
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+############################################################
+#
+# mybatis mapper 配置
+#
+############################################################
+# 通用 mapper 配置
+mapper:
+  mappers: com.hcr.my.mapper.MyMapper
+  not-empty: false   #在进行数据库操作的时候，判断表达式 username != null,是否追加username != ''
+  identity: MYSQL
+
+

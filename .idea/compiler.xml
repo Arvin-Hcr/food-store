@@ -9,6 +9,7 @@
         <module name="food-dev-service" />
         <module name="food-dev-common" />
         <module name="food-dev-pojo" />
+        <module name="food-sso" />
         <module name="food-dev-mapper" />
         <module name="food-dev-aip" />
       </profile>
@@ -21,6 +22,7 @@
       <module name="food-dev-mapper" options="-parameters" />
       <module name="food-dev-pojo" options="-parameters" />
       <module name="food-dev-service" options="-parameters" />
+      <module name="food-sso" options="-parameters" />
     </option>
   </component>
 </project>
