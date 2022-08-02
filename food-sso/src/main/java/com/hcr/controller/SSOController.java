@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -107,12 +108,45 @@ public class SSOController {
         //5.生产临时门票，回跳到调用端网站，是由CAS端所签发的一个一次性的临时ticket
         String tmpTicket = createTempTicket();
 
-        //return "redirect:" + returnUrl + "?tmpTicket=" + tmpTicket;
+        /**
+         * userTicket:用于表示用户在CAS端的一个登录状态：已经登录
+         * tmpTicket:用于颁发给用户进行一次性的验证的票据，有时效性
+         */
+        return "redirect:" + returnUrl + "?tmpTicket=" + tmpTicket;
 
 
 
-        return "login";
+       // return "login";
 
+    }
+
+    /**
+     * 销毁临时票据
+     * @param tmpTicket
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("/verifyTmpTicket")
+    @ResponseBody
+    public JSONResult verifyTmpTicket(String tmpTicket,
+                                      HttpServletRequest request,
+                                      HttpServletResponse response) throws Exception {
+        //使用一次性临时票据来验证用户是否登录，如果登录过，把用户会话信息返回给站点
+        //使用完毕后，需要销毁临时票据
+        String tmpTicketValue = redisOperator.get(REDIS_TMP_TICKET + ":" + tmpTicket);
+        if (StringUtils.isBlank(tmpTicketValue)){
+            return JSONResult.errorUserTicket("用户票据过期");
+        }
+        //如果临时票据OK，则需要销毁，并且拿到CAS端cookie中的全局userTicket，从此再获取用户会话
+        if (!tmpTicketValue.equals(MD5Utils.getMD5Str(tmpTicket))){
+            return JSONResult.errorUserTicket("用户票据异常");
+        }else {
+            //销毁临时票据
+            redisOperator.del(REDIS_TMP_TICKET + ":" + tmpTicket);
+        }
+        return JSONResult.ok();
     }
 
     /**
