@@ -6,7 +6,7 @@ import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import javax.persistence.Id;
-//默认5个分片，每个分片1一个备份
+//默认5个分片，每个分片1一个备份，不可修改
 @Document(indexName = "stu",type = "_doc") //在es7版本之前需要添加type类型
 public class Stu {
 

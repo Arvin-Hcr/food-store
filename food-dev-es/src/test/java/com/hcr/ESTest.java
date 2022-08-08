@@ -2,15 +2,31 @@ package com.hcr;
 
 import com.hcr.pojo.Stu;
 import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
+import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
+import org.elasticsearch.search.sort.FieldSortBuilder;
+import org.elasticsearch.search.sort.SortBuilder;
+import org.elasticsearch.search.sort.SortOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
+import org.springframework.data.elasticsearch.core.SearchResultMapper;
+import org.springframework.data.elasticsearch.core.aggregation.AggregatedPage;
+import org.springframework.data.elasticsearch.core.aggregation.impl.AggregatedPageImpl;
 import org.springframework.data.elasticsearch.core.query.*;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.awt.print.Pageable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RunWith(SpringRunner.class)
@@ -83,5 +99,61 @@ public class ESTest {
     @Test
     private void delIndexStuDoc(){
         es.delete(Stu.class,"1002");
+    }
+
+    /**
+     * 分页\高亮\排序
+     */
+    @Test
+    private void searchStuDoc(){
+
+        String preTag = "<font color = 'red'>";
+        String postTag = "</font>";
+
+        //分页
+     /*   Pageable pageable = PageRequest.of(0,10);
+     //排序
+        SortBuilder sortBuilder = new FieldSortBuilder("age").order(SortOrder.ASC);
+        SortBuilder sortBuilderId = new FieldSortBuilder("stuId").order(SortOrder.ASC);
+        SearchQuery query = new NativeSearchQueryBuilder()
+                .withQuery(QueryBuilders.matchQuery("description","d d"))
+                .withHighlightFields(new HighlightBuilder.Field("description")
+                                            .preTags(preTag)
+                                            .postTags(postTag))
+                .withSort(sortBuilder)
+                .withSort(sortBuilderId)
+                .withPageable(pageable)
+                .build();
+        AggregatedPage<Stu> page = es.queryForPage(query, Stu.class, new SearchResultMapper() {
+            @Override
+            public <T> AggregatedPage<T> mapResults(SearchResponse searchResponse, Class<T> aClass, org.springframework.data.domain.Pageable pageable) {
+                List<Stu> stuH = new ArrayList<>();
+                SearchHits hits = searchResponse.getHits();
+                for (SearchHit h : hits){
+                    HighlightField highlightField = h.getHighlightFields().get("description");
+                    String description = highlightField.getFragments()[0].toString();
+
+                    Object stuId = (Object) h.getSourceAsMap().get("stuId");
+                    String name = (String)h.getSourceAsMap().get("name");
+                    ...
+
+                    Stu stuHigh = new Stu();
+                    stuHigh.setDescription(description);
+                    stuHigh.setStuId((Long.valueOf(stuId.toString())));
+                    stuHigh.setName(name);
+
+                    stuH.add(stuHigh);
+                }
+                if (stuH.size() > 0){
+                    return new AggregatedPageImpl<>((List<T>)stuH);
+                }
+                return null;
+            }
+        });
+        System.out.println("检索后的总分页数目为：" + page.getTotalPages());
+        List<Stu> stuList = page.getContent();
+        for (Stu s : stuList){
+            System.out.println(s);
+        } */
     }
 }
