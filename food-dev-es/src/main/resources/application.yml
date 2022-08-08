@@ -1,3 +1,6 @@
+server:
+  port: 8033
+
 spring:
   profiles:
     active: dev            #激活挂载文件，不同环境使用不同配置
