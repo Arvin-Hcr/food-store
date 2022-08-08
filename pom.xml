@@ -15,6 +15,7 @@
         <module>food-dev-pojo</module>
         <module>food-dev-service</module>
         <module>food-sso</module>
+        <module>food-dev-es</module>
     </modules>
 
 

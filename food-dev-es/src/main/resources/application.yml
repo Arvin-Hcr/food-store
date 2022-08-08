@@ -1,0 +1,14 @@
+spring:
+  profiles:
+    active: dev            #激活挂载文件，不同环境使用不同配置
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource    #數據源類型:HikariDataSource
+    # url: jdbc:mysql://localhost:3306/foodie-shop?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: root
+    ####### ES 配置 ############
+  data:
+    elasticsearch:
+      cluster-name: es6
+      cluster-nodes: 192.168.1.187:9300  #集群改写多个IP

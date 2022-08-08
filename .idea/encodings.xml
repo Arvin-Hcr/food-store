@@ -3,6 +3,7 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/food-dev-aip/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/food-dev-common/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/food-dev-es/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/food-dev-mapper/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/food-dev-pojo/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/food-dev-service/src/main/java" charset="UTF-8" />
