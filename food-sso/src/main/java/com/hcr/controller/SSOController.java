@@ -198,6 +198,26 @@ public class SSOController {
         return JSONResult.ok(JsonUtils.jsonToPojo(userRedis, UsersVO.class));
     }
 
+    @PostMapping("/logout")
+    @ResponseBody
+    public JSONResult logout(String userId,
+                                  HttpServletRequest request,
+                                  HttpServletResponse response) throws Exception {
+
+        // 0. 获取CAS中的用户门票
+        String userTicket = getCookie(request, COOKIE_USER_TICKET);
+
+        // 1. 清除userTicket票据，redis/cookie
+        deleteCookie(COOKIE_USER_TICKET, response);
+        redisOperator.del(REDIS_USER_TICKET + ":" + userTicket);
+
+        // 2. 清除用户全局会话（分布式会话）
+        redisOperator.del(REDIS_USER_TOKEN + ":" + userId);
+
+        return JSONResult.ok();
+    }
+
+
     /**
      * 创建临时票据
      * @return
@@ -237,4 +257,13 @@ public class SSOController {
         return cookieValue;
     }
 
+    private void deleteCookie(String key,
+                              HttpServletResponse response) {
+
+        Cookie cookie = new Cookie(key, null);
+        cookie.setDomain("sso.com");
+        cookie.setPath("/");
+        cookie.setMaxAge(-1);
+        response.addCookie(cookie);
+    }
 }
