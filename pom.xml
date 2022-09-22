@@ -16,6 +16,7 @@
         <module>food-dev-service</module>
         <module>food-sso</module>
         <module>food-dev-es</module>
+        <module>food-dev-fs</module>
     </modules>
 
 

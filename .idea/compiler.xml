@@ -13,6 +13,7 @@
         <module name="food-dev-pojo" />
         <module name="food-sso" />
         <module name="food-dev-es" />
+        <module name="food-dev-fs" />
       </profile>
     </annotationProcessing>
   </component>
@@ -21,6 +22,7 @@
       <module name="food-dev-aip" options="-parameters" />
       <module name="food-dev-common" options="-parameters" />
       <module name="food-dev-es" options="-parameters" />
+      <module name="food-dev-fs" options="-parameters" />
       <module name="food-dev-mapper" options="-parameters" />
       <module name="food-dev-pojo" options="-parameters" />
       <module name="food-dev-service" options="-parameters" />
